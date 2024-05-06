@@ -2,7 +2,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <iostream>
-#include <freeglut.h>
+#include "dependencies/freeglut/include/GL/freeglut.h"
 
 
 void displayMe(void)

@@ -1,6 +1,6 @@
 all: main
 
-CXX = GCC
+CXX = clang++
 override CXXFLAGS += -g -Wmost -Werror
 
 SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.cpp' -print | sed -e 's/ /\\ /g')

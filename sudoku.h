@@ -11,6 +11,7 @@ private:
   void swapCols(int c1, int c2);
   void swapSubMatRows(int r1, int r2);
   void swapSubMatCols(int c1, int c2);
+  void removeElement(string difficulty);
 
 public:
   int r;
@@ -30,37 +31,36 @@ public:
     for (int i = 0; i < rows; i++) {
       matrix[i] = new int[columns];
     }
-    int easyNumbers[] = {3, 4, 5, 9, 2, 6, 7, 8, 1, 8, 9, 1, 4, 7, 3, 5, 2,
-                         6, 7, 2, 6, 8, 5, 1, 4, 3, 9, 2, 5, 4, 1, 9, 7, 8,
-                         6, 3, 9, 1, 3, 5, 6, 8, 2, 4, 7, 6, 8, 7, 3, 4, 2,
-                         1, 9, 5, 4, 7, 9, 6, 8, 5, 3, 1, 2, 1, 6, 2, 7, 3,
-                         4, 9, 5, 8, 5, 3, 8, 2, 1, 9, 6, 7, 4};
+    int numbers1[] = {3, 4, 5, 9, 2, 6, 7, 8, 1, 8, 9, 1, 4, 7, 3, 5, 2,
+                      6, 7, 2, 6, 8, 5, 1, 4, 3, 9, 2, 5, 4, 1, 9, 7, 8,
+                      6, 3, 9, 1, 3, 5, 6, 8, 2, 4, 7, 6, 8, 7, 3, 4, 2,
+                      1, 9, 5, 4, 7, 9, 6, 8, 5, 3, 1, 2, 1, 6, 2, 7, 3,
+                      4, 9, 5, 8, 5, 3, 8, 2, 1, 9, 6, 7, 4};
     int count = 0;
-    int mediumNumbers[] = {6, 1, 3, 8, 2, 7, 5, 4, 9, 2, 5, 7, 6, 4, 9, 8, 3,
-                           1, 9, 8, 4, 5, 3, 1, 6, 7, 2, 1, 9, 6, 7, 5, 3, 2,
-                           8, 4, 8, 3, 2, 4, 9, 6, 1, 5, 7, 7, 4, 5, 2, 1, 8,
-                           3, 9, 6, 3, 7, 8, 9, 6, 2, 4, 1, 5, 4, 2, 9, 1, 8,
-                           5, 7, 6, 3, 5, 6, 1, 3, 7, 4, 9, 2, 8};
-    count = 0;
-    int hardNumbers[] = {7, 9, 5, 2, 6, 1, 4, 8, 3, 4, 2, 6, 8, 7, 3, 5, 1,
-                         9, 8, 1, 3, 4, 5, 9, 2, 6, 7, 5, 7, 2, 1, 9, 8, 6,
-                         3, 4, 9, 3, 8, 6, 4, 5, 7, 2, 1, 6, 4, 1, 3, 2, 7,
-                         9, 5, 8, 3, 5, 9, 7, 1, 6, 8, 4, 2, 1, 6, 4, 9, 8,
-                         2, 3, 7, 5, 2, 8, 7, 5, 3, 4, 1, 9, 6};
-
-    if (difficulty == "easy") {
+    int numbers2[] = {6, 1, 3, 8, 2, 7, 5, 4, 9, 2, 5, 7, 6, 4, 9, 8, 3,
+                      1, 9, 8, 4, 5, 3, 1, 6, 7, 2, 1, 9, 6, 7, 5, 3, 2,
+                      8, 4, 8, 3, 2, 4, 9, 6, 1, 5, 7, 7, 4, 5, 2, 1, 8,
+                      3, 9, 6, 3, 7, 8, 9, 6, 2, 4, 1, 5, 4, 2, 9, 1, 8,
+                      5, 7, 6, 3, 5, 6, 1, 3, 7, 4, 9, 2, 8};
+    int numbers3[] = {7, 9, 5, 2, 6, 1, 4, 8, 3, 4, 2, 6, 8, 7, 3, 5, 1,
+                      9, 8, 1, 3, 4, 5, 9, 2, 6, 7, 5, 7, 2, 1, 9, 8, 6,
+                      3, 4, 9, 3, 8, 6, 4, 5, 7, 2, 1, 6, 4, 1, 3, 2, 7,
+                      9, 5, 8, 3, 5, 9, 7, 1, 6, 8, 4, 2, 1, 6, 4, 9, 8,
+                      2, 3, 7, 5, 2, 8, 7, 5, 3, 4, 1, 9, 6};
+    int randSeed = randomGenerator(3);
+    if (randSeed == 1) {
       count = 0;
       for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
-          matrix[i][j] = easyNumbers[count];
+          matrix[i][j] = numbers1[count];
           count++;
         }
       }
-    } else if (difficulty == "medium") {
+    } else if (randSeed == 2) {
       count = 0;
       for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
-          matrix[i][j] = mediumNumbers[count];
+          matrix[i][j] = numbers2[count];
           count++;
         }
       }
@@ -68,13 +68,11 @@ public:
       count = 0;
       for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
-          matrix[i][j] = hardNumbers[count];
+          matrix[i][j] = numbers3[count];
           count++;
         }
       }
     }
-    printSudoku();
-    cout << endl;
     fill(difficulty);
   }
 };

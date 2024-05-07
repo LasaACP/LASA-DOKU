@@ -72,7 +72,7 @@ void sudoku::shuffleSubMatCols() {
 
   for (int i = 0; i < 3; i++) {
     int ranNum = randomGenerator(3);
-    swapSubMatCols(i, (ranNum-1));
+    swapSubMatCols(i, (ranNum - 1));
   }
 }
 void sudoku::swapSubMatCols(int c1, int c2) {
@@ -81,20 +81,20 @@ void sudoku::swapSubMatCols(int c1, int c2) {
   }
 }
 
-void sudoku::removeElement(string Difficulty){
+void sudoku::removeElement(string Difficulty) {
   int randX;
   int randY;
   int amtToRemove;
-  if(Difficulty == "easy"){
-    amtToRemove = randomGenerator(8);
-  } else if(Difficulty == "medium"){
-    amtToRemove = randomGenerator(14);
+  if (Difficulty == "easy") {
+    amtToRemove = randomGenerator(21);
+  } else if (Difficulty == "medium") {
+    amtToRemove = randomGenerator(42);
   } else {
-    amtToRemove = randomGenerator(20);
+    amtToRemove = randomGenerator(61);
   }
-  for(int i = 0; i < amtToRemove; i++){
-    randX = randomGenerator(9-1);
-    randY = randomGenerator(9-1);
+  for (int i = 0; i < amtToRemove; i++) {
+    randX = randomGenerator(9 - 1);
+    randY = randomGenerator(9 - 1);
     matrix[randX][randY] = 0;
   }
 }

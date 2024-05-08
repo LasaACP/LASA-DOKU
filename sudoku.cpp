@@ -2,6 +2,8 @@
 #include "iostream"
 #include "random"
 #include <bits/stdc++.h>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -15,6 +17,21 @@ int sudoku::randomGenerator(int num) {
   int random_number = dis(gen);
 
   return random_number;
+}
+
+bool sudoku::getBoard() {
+  ofstream outfile("outfile.csv");
+  if (!outfile.is_open()) {
+    cerr << "Failed to open file for writing.\n";
+    return false;
+  }
+  for (int i = 0; i < 9; i++) {
+    for (int j = 0; j < 9; j++) {
+      outfile << matrix[i][j] << endl;
+    }
+  }
+  outfile.close();
+  return true;
 }
 
 void sudoku::shuffleRows() {
@@ -105,6 +122,7 @@ void sudoku::fill(string difficulty) {
   shuffleSubMatRows();
   shuffleSubMatCols();
   removeElement(difficulty);
+  getBoard();
 }
 
 void sudoku::printSudoku() {

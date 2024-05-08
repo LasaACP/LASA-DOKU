@@ -18,6 +18,7 @@ public:
   int c;
   int **matrix;
   void shuffleSubMatCols();
+  bool getBoard();
   void shuffleSubMatRows();
   void shuffleRows();
   void shuffleCols();

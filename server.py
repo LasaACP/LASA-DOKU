@@ -18,6 +18,10 @@ def get_csv():
     # Change the path to match the location of your CSV file
     return send_file('outfile.csv', as_attachment=True)
 
+@app.route('/solution.csv')
+def get_solution():
+    return send_file('solution.csv', as_attachment=True)
+
 if __name__ == '__main__':
     app.run(debug=True)
     

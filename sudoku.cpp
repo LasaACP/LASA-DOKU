@@ -7,9 +7,32 @@
 using namespace std;
 
 
+void sudoku::getSolution() {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            solutionMatrix[i][j] = matrix[i][j];
+        }
+    }
+    ofstream outfile("solution.csv");
+    if (!outfile.is_open()) {
+        cerr << "Failed to open file for writing.\n";
+    }
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            outfile << solutionMatrix[i][j] << endl;
+        }
+    }
+    outfile.close();
+}
+
+
 sudoku::sudoku(int rows, int columns, string difficulty) {
     r = rows;
     c = columns;
+    solutionMatrix = new int* [rows];
+    for (int i = 0; i < rows; i++) {
+        solutionMatrix[i] = new int[columns];
+    }
     matrix = new int* [rows];
     for (int i = 0; i < rows; i++) {
         matrix[i] = new int[columns];
@@ -179,6 +202,7 @@ void sudoku::fill(string difficulty) {
     shuffleRows();
     shuffleSubMatRows();
     shuffleSubMatCols();
+    getSolution();
     removeElement(difficulty);
     getBoard();
 }

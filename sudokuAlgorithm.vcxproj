@@ -136,6 +136,7 @@
   <ItemGroup>
     <None Include="outfile.csv" />
     <None Include="server.py" />
+    <None Include="solution.csv" />
     <None Include="sudokuUI.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

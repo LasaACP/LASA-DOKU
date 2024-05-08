@@ -20,6 +20,7 @@
 
 <body>
     <button id="generateSudokuButton">Generate Sudoku</button>
+    <p> "hola, welcome to sudoku solving!" </p>
     <button id="solveSudokuBoard">Solve Board</button>
     <div id="output"></div>
 
@@ -82,9 +83,9 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('solveSudokuBoard').addEventListener('click', function () {
+            document.getElementById('generateSudokuButton').addEventListener('click', function ()){
                 displaySolution();
-            })
+            }
 
         });
 
@@ -100,7 +101,7 @@
                         const line = lines[i].trim(); // Remove leading/trailing whitespaces
                         if (line === '') {
                             break; // Stop reading if an empty line is encountered
-                        }
+                        } ss
                         const parts = line.split(',');
                         data.push(parts);
                     }

@@ -36,5 +36,6 @@
     <None Include="sudokuUI.html">
       <Filter>src\templates</Filter>
     </None>
+    <None Include="solution.csv" />
   </ItemGroup>
 </Project>

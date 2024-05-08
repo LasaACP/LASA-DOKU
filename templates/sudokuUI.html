@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Sudoku Reader</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <button id="generateSudokuButton">Generate Sudoku</button>
+    <div id="output"></div>
+
+    <script>
+        function displayData() {
+            // Fetch the CSV file from the server
+            fetch('/outfile.csv')
+                .then(response => response.text())
+                .then(content => {
+                    const lines = content.split('\n');
+                    const data = [];
+
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim(); // Remove leading/trailing whitespaces
+                        if (line === '') {
+                            break; // Stop reading if an empty line is encountered
+                        }
+                        const parts = line.split(',');
+                        data.push(parts);
+                    }
+
+                    // Display the Sudoku board
+                    const outputDiv = document.getElementById('output');
+                    outputDiv.innerHTML = '';
+
+                    const table = document.createElement('table');
+                    table.border = 1;
+                    for (let i = 0; i < 9; i++) {
+                        const row = document.createElement('tr');
+                        for (let j = 0; j < 9; j++) {
+                            const cell = document.createElement('td');
+                            cell.textContent = data[i * 9 + j];
+                            row.appendChild(cell);
+                        }
+                        table.appendChild(row);
+                    }
+                    outputDiv.appendChild(table);
+                })
+                .catch(error => console.error('Error fetching CSV file:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to handle button click event
+            document.getElementById('generateSudokuButton').addEventListener('click', function() {
+                // Request the server to generate a new Sudoku puzzle
+                fetch('/generate_sudoku')
+                    .then(response => {
+                        // Once the Sudoku puzzle is generated, request the updated CSV file
+                        if (response.ok) {
+                            displayData();
+                        } else {
+                            console.error('Error generating Sudoku puzzle');
+                        }
+                    })
+                    .catch(error => console.error('Error generating Sudoku puzzle:', error));
+            });
+
+            // Initial display of Sudoku board when the page loads
+            displayData();
+        });
+    </script>
+</body>
+</html>

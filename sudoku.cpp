@@ -191,8 +191,8 @@ void sudoku::removeElement(string Difficulty) {
         amtToRemove = randomGenerator(61);
     }
     for (int i = 0; i < amtToRemove; i++) {
-        randX = randomGenerator(9 - 1);
-        randY = randomGenerator(9 - 1);
+        randX = randomGenerator(9)-1;
+        randY = randomGenerator(9)-1;
         matrix[randX][randY] = 0;
     }
 }

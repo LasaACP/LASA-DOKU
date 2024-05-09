@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV Sudoku Reader</title>
+    <title>La SAdoku</title>
     <style>
         table {
             border-collapse: collapse;
@@ -15,23 +15,46 @@
             border: 1px solid black;
             text-align: center;
         }
+
+        .center {
+            text-align: center;
+        }
+
+        .center-div {
+            width: 300px; 
+            margin: 0 auto; 
+            background-color: lightgray; 
+            padding: 10px; 
+        }
+
+        .center-div2 {
+            width: 300px;
+            margin: 0 auto;
+            padding: 10px;
+        }
     </style>
 </head>
 
-<body>
-    <button id="generateSudokuButton">Generate Sudoku</button>
-    <button id="solveSudokuBoard">Solve Board</button>
-    <button id="checkSudokuBoard">Check Answers</button>
+<div class="center" style="background-color: lightgray">
+    <p style="font-size: 75px; background-color: mediumpurple"> La SAdoku </p>
     <br />
-    <input type="text" id="userInputField">
-    <button id="submitButton">Submit (x, y, num (1-9))</button>
-    <br />
-    <p> note that y is from top to bottom (i.e. to print to the top corner of the table y would equal 1)</p>
-    <div id="output"></div>
-    <div id="output2"></div>
-    <br />
-    <p>notes:</p>
-    <textarea name="notes" id="notes" style="height:100px; width:400px;"></textarea>
+
+    <body>
+        <button id="generateSudokuButton">Generate Sudoku</button>
+        <button id="solveSudokuBoard">Solve Board</button>
+        <button id="checkSudokuBoard">Check Answers</button>
+        <br />
+        <input type="text" id="userInputField">
+        <button id="submitButton">Submit (x, y, num (1-9))</button>
+        <br />
+        <p> note that y is from top to bottom (i.e. to print to the top corner of the table y would equal 1)</p>
+        <div class="center-div" id="output" ></div>
+        <div class="center-div2" id="output2"></div>
+        <br />
+        <p>notes:</p>
+        <textarea name="notes" id="notes" style="height:100px; width:400px;"></textarea>
+        <br />
+</div>
 
     <script>
 

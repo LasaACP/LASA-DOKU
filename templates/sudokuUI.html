@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La SAdoku</title>
     <style>
+        
         table {
             border-collapse: collapse;
         }
@@ -34,7 +35,7 @@
         }
     </style>
 </head>
-
+<!--body of webpage, contained within a div class that aligns it with the center-->
 <div class="center" style="background-color: lightgray">
     <p style="font-size: 75px; background-color: mediumpurple"> La SAdoku </p>
     <br />
@@ -84,9 +85,9 @@
         });
 
 
-
+        //displays unsolved board via csv file
         function displayData() {
-            // Fetch the CSV file from the server
+            // Fetch csv file from server
             fetch('/outfile.csv')
                 .then(response => response.text())
                 .then(content => {
@@ -111,6 +112,9 @@
                         for (let j = 0; j < 9; j++) {
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
+                            if (data[i * 9 + j] == "0") {
+                                cell.textContent = "";
+                            }
 
                         }
                     }
@@ -125,7 +129,7 @@
                 // Request the server to generate a new Sudoku puzzle
                 fetch('/generate_sudoku')
                     .then(response => {
-                        // Once the Sudoku puzzle is generated, request the updated CSV file
+                        // request the updated CSV file
                         if (response.ok) {
                             displayData();
                         } else {
@@ -135,19 +139,18 @@
                     .catch(error => console.error('Error generating Sudoku puzzle:', error));
             });
 
-            // Initial display of Sudoku board when the page loads
             displayData();
         });
-
+        //event listener for solve button
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('solveSudokuBoard').addEventListener('click', function () {
                 displaySolution();
             })
 
         });
-
+        //displays solution to board
         function displaySolution() {
-            // Fetch the CSV file from the server
+            // Fetch csv file from server
             fetch('/solution.csv')
                 .then(response => response.text())
                 .then(content => {
@@ -157,7 +160,7 @@
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim(); // Remove leading/trailing whitespaces
                         if (line === '') {
-                            break; // Stop reading if an empty line is encountered
+                            break; 
                         }
                         const parts = line.split(',');
                         data.push(parts);
@@ -172,16 +175,18 @@
                         for (let j = 0; j < 9; j++) {
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
-
+                            if (data[i * 9 + j] == "0") {
+                                cell.textContent = "";
+                            }
                         }
                     }
                     outputDiv.appendChild(globalTable);
                 })
                 .catch(error => console.error('Error fetching CSV file:', error));
         }
-
+        //verifies that the board is correct
         function checkBoard() {
-            fetch('/solution.csv')
+            fetch('/solution.csv') // fetch csv file from server
                 .then(response => response.text())
                 .then(content => {
                     const lines = content.split('\n');
@@ -224,7 +229,7 @@
                 .catch(error => console.error('Error fetching or parsing CSV file:', error));
         }
 
-
+        //print win/lose msg depending on whether or not true or false is passed into method
         function winLoseMessage(winOrLose) {
             var outputDiv = document.getElementById("output2");
 
@@ -237,7 +242,7 @@
                 outputDiv.innerHTML = "";
             }, 3000); 
         }
-
+        //event listener for checksudoku board button
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('checkSudokuBoard').addEventListener('click', function () {
                 checkBoard();
@@ -245,7 +250,7 @@
 
         });
 
-
+        //event listener for user input button / field
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('submitButton').addEventListener('click', function () {
                 var userEdits = document.getElementById("userInputField").value;
@@ -254,7 +259,9 @@
                 var num = userEdits.charCodeAt(2) - 48;
                 var row = globalTable.rows[y];
                 var cell = row.cells[x];
-                cell.textContent = num;
+                if (cell.textContent == "") {
+                    cell.textContent = num;
+                }
             })
 
         });

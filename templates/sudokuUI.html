@@ -21,9 +21,11 @@
 <body>
     <button id="generateSudokuButton">Generate Sudoku</button>
     <button id="solveSudokuBoard">Solve Board</button>
+    <button id="checkSudokuBoard">Check Answers</button>
     <input type="text" id="userInputField">
     <button id="submitButton">Submit (x, y, num (1-9))</button>
     <div id="output"></div>
+    <div id="output2"></div>
     <br />
     <p>notes:</p>
     <textarea name="notes" id="notes" style="height:100px; width:400px;"></textarea>
@@ -151,6 +153,72 @@
                 })
                 .catch(error => console.error('Error fetching CSV file:', error));
         }
+
+        function checkBoard() {
+            fetch('/solution.csv')
+                .then(response => response.text())
+                .then(content => {
+                    const lines = content.split('\n');
+                    const data = [];
+
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim(); 
+                        if (line === '') {
+                            continue; 
+                        }
+                        const parts = line.split(',');
+                        data.push(parts);
+                    }
+
+                    var outputDiv = document.getElementById("output2");
+                    let mismatchFound = false;
+
+                    // Check the board
+                    for (let i = 0; i < 9; i++) {
+                        var row = globalTable.rows[i];
+                        for (let j = 0; j < 9; j++) {
+                            var cell = row.cells[j];
+                            var comparison = String(cell.textContent).localeCompare(data[i * 9 + j]);
+                            if (comparison !== 0) {
+                                mismatchFound = true;
+                                break; 
+                            }
+                        }
+                        if (mismatchFound) {
+                            break; 
+                        }
+                    }
+
+                    if (mismatchFound) {
+                        winLoseMessage(false);
+                    } else {
+                        winLoseMessage(true);
+                    }
+                })
+                .catch(error => console.error('Error fetching or parsing CSV file:', error));
+        }
+
+
+        function winLoseMessage(winOrLose) {
+            var outputDiv = document.getElementById("output2");
+
+            if (winOrLose == true) {
+                outputDiv.innerHTML = "you did it!";
+            } else {
+                outputDiv.innerHTML = "try again!";
+            }
+            setTimeout(function () {
+                outputDiv.innerHTML = "";
+            }, 3000); 
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('checkSudokuBoard').addEventListener('click', function () {
+                checkBoard();
+            })
+
+        });
+
 
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('submitButton').addEventListener('click', function () {

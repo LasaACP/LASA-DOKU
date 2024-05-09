@@ -24,6 +24,9 @@
     <input type="text" id="userInputField">
     <button id="submitButton">Submit (x, y, num (1-9))</button>
     <div id="output"></div>
+    <br />
+    <p>notes:</p>
+    <textarea name="notes" id="notes" style="height:100px; width:400px;"></textarea>
 
     <script>
 
@@ -77,7 +80,7 @@
 
                     for (let i = 0; i < 9; i++) {
                         var row = globalTable.rows[i];
-                        for (let j = 0; j < 9; j++) { 
+                        for (let j = 0; j < 9; j++) {
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
 
@@ -161,6 +164,6 @@
             })
 
         });
-    </script>
+</script>
 </body>
 </html>

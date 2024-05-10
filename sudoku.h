@@ -16,6 +16,7 @@ private:
 public:
 	int r;
 	int c;
+	int seed;
 	int** matrix;
 	int** solutionMatrix;
 	void shuffleSubMatCols();

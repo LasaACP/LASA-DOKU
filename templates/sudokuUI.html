@@ -37,7 +37,7 @@
 </head>
 <!--body of webpage, contained within a div class that aligns it with the center-->
 <div class="center" style="background-color: lightgray">
-    <p style="font-size: 75px; background-color: mediumpurple"> La SAdoku </p>
+    <p style="font-size: 75px; background-color: mediumpurple"> LA-SAdoku </p>
     <br />
 
     <body>
@@ -113,7 +113,7 @@
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
                             if (data[i * 9 + j] == "0") {
-                                cell.textContent = "";
+                                cell.textContent = ""
                             }
 
                         }
@@ -176,7 +176,7 @@
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
                             if (data[i * 9 + j] == "0") {
-                                cell.textContent = "";
+                                cell.textContent = ""
                             }
                         }
                     }
@@ -259,9 +259,7 @@
                 var num = userEdits.charCodeAt(2) - 48;
                 var row = globalTable.rows[y];
                 var cell = row.cells[x];
-                if (cell.textContent == "") {
-                    cell.textContent = num;
-                }
+                cell.textContent = num;
             })
 
         });

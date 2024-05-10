@@ -20,7 +20,7 @@ public:
 	int** matrix;
 	int** solutionMatrix;
 	void shuffleSubMatCols();
-	void getSolution();
+	int** getSolution(int** matrix);
 	bool getBoard();
 	void shuffleSubMatRows();
 	void shuffleRows();

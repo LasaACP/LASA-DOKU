@@ -8,28 +8,84 @@ using namespace std;
 
 
 // Method allows the user to see the solution to the sudoku board
-void sudoku::getSolution() {
-
-    // Copy the original board into the solution matrix to print
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            solutionMatrix[i][j] = matrix[i][j];
+bool isValid(int **matrix, int num, int rows, int cols){
+    for(int i = 0; i < 9; i++){
+        if(matrix[rows][i] == num){
+            return false;
         }
     }
-    ofstream outfile("solution.csv");
-    
-    // Make sure the file is open, show error if it isn't
-    if (!outfile.is_open()) {
-        cerr << "Failed to open file for writing.\n";
-    }
-
-    // Print the solution to user
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            outfile << solutionMatrix[i][j] << endl;
+    for(int i = 0; i < 9; i++){
+        if(matrix[i][cols] == num){
+            return false;
         }
     }
-    outfile.close();
+    int startRow = rows - rows % 3;
+    int startCol = cols - cols % 3;
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            if(matrix[i + startRow][j + startCol] == num){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+pair<int,int> findempty(int** matrix){
+    for(int i = 0; i < 9; i++){
+        for(int j = 0; j < 9; j++){
+            if(matrix[i][j] == 0){
+                return make_pair(i,j);
+            }
+        }
+    }
+    return make_pair(-1,-1);
+}
+
+int** sudoku::getSolution(int ** matrix) {
+
+
+    queue<pair<int **, pair<int, int>>> q;
+    q.push(make_pair(matrix, make_pair(0,0)));
+    while(!q.empty()){
+        auto current = q.front();
+        q.pop();
+        int **curmatrix = current.first;
+        int row = current.second.first;
+        int col=  current.second.second;
+        if(row == -1 && col == -1){
+            return curmatrix;
+        }
+        for(int num = 1; num<=9; num++){
+            if(isValid(curmatrix, num, row, col)){
+                curmatrix[row][col] = num;
+                auto nextempty = findempty(matrix);
+                q.push(make_pair(curmatrix, nextempty));
+                curmatrix[row][col] = 0;
+            }
+        }
+        return curmatrix;
+    }
+
+    // // Copy the original board into the solution matrix to print
+    // for (int i = 0; i < 9; i++) {
+    //     for (int j = 0; j < 9; j++) {
+    //         solutionMatrix[i][j] = matrix[i][j];
+    //     }
+    // }
+    // ofstream outfile("solution.csv");
+
+    // // Make sure the file is open, show error if it isn't
+    // if (!outfile.is_open()) {
+    //     cerr << "Failed to open file for writing.\n";
+    // }
+
+    // // Print the solution to user
+    // for (int i = 0; i < 9; i++) {
+    //     for (int j = 0; j < 9; j++) {
+    //         outfile << solutionMatrix[i][j] << endl;
+    //     }
+    // }
+    // outfile.close();
 }
 
 
@@ -266,7 +322,8 @@ void sudoku::fill(string difficulty) {
     shuffleSubMatCols();
 
     // Important to include getSolution() before removeElement() to retain solved matrix
-    getSolution();
+    
+    getSolution(matrix);
     removeElement(difficulty);
     getBoard();
 }

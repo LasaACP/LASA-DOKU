@@ -9,17 +9,18 @@ def index():
 
 @app.route('/generate_sudoku')
 def generate_sudoku():
-    # Call your C++ program to generate the Sudoku puzzle and update the CSV file
+    # Call C++ .exe file to generate the Sudoku puzzle and update the CSV file
     subprocess.run(['./sudokuAlgorithm.exe'], check=True)
     return "fesoigujew0roigjwe"
 
 @app.route('/outfile.csv')
 def get_csv():
-    # Change the path to match the location of your CSV file
+    #returns corresponding csv file to fetch request
     return send_file('outfile.csv', as_attachment=True)
 
 @app.route('/solution.csv')
 def get_solution():
+    #returns corresponding csv file to fetch request
     return send_file('solution.csv', as_attachment=True)
 
 if __name__ == '__main__':

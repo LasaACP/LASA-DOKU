@@ -3,12 +3,13 @@
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
 
 // Method allows the user to see the solution to the sudoku board
-bool isValid(int **matrix, int num, int rows, int cols){
+bool sudoku::isValid(int **matrix, int num, int rows, int cols){
     for(int i = 0; i < 9; i++){
         if(matrix[rows][i] == num){
             return false;
@@ -30,7 +31,7 @@ bool isValid(int **matrix, int num, int rows, int cols){
     }
     return true;
 }
-pair<int,int> findempty(int** matrix){
+pair<int,int> sudoku::findempty(int** matrix){
     for(int i = 0; i < 9; i++){
         for(int j = 0; j < 9; j++){
             if(matrix[i][j] == 0){
@@ -40,52 +41,43 @@ pair<int,int> findempty(int** matrix){
     }
     return make_pair(-1,-1);
 }
-
-int** sudoku::getSolution(int ** matrix) {
-
-
-    queue<pair<int **, pair<int, int>>> q;
-    q.push(make_pair(matrix, make_pair(0,0)));
-    while(!q.empty()){
-        auto current = q.front();
-        q.pop();
-        int **curmatrix = current.first;
-        int row = current.second.first;
-        int col=  current.second.second;
-        if(row == -1 && col == -1){
-            return curmatrix;
+bool sudoku::solve(int** matrix) {
+    pair<int, int> empty = findempty(matrix);
+    if(empty.first == -1) {
+        return true; // No empty space found, puzzle solved
+    }
+    int row = empty.first;
+    int col = empty.second;
+    for(int num = 1; num <= 9; num++) {
+        if(isValid(matrix, num, row, col)) {
+            matrix[row][col] = num;
+            if(solve(matrix)) {
+                return true;
+            }
+            matrix[row][col] = 0; // undo the current cell for backtracking
         }
-        for(int num = 1; num<=9; num++){
-            if(isValid(curmatrix, num, row, col)){
-                curmatrix[row][col] = num;
-                auto nextempty = findempty(matrix);
-                q.push(make_pair(curmatrix, nextempty));
-                curmatrix[row][col] = 0;
+    }
+    return false;
+}
+
+void sudoku::getSolution(int ** matrix) {
+    ofstream outfile("solution.csv");
+
+    if(solve(matrix)){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                outfile << matrix[i][j] << endl;
             }
         }
-        return curmatrix;
+        return;
     }
+    outfile << "no solution" << endl;
+    return;
 
-    // // Copy the original board into the solution matrix to print
-    // for (int i = 0; i < 9; i++) {
-    //     for (int j = 0; j < 9; j++) {
-    //         solutionMatrix[i][j] = matrix[i][j];
-    //     }
-    // }
-    // ofstream outfile("solution.csv");
 
-    // // Make sure the file is open, show error if it isn't
-    // if (!outfile.is_open()) {
-    //     cerr << "Failed to open file for writing.\n";
-    // }
 
-    // // Print the solution to user
-    // for (int i = 0; i < 9; i++) {
-    //     for (int j = 0; j < 9; j++) {
-    //         outfile << solutionMatrix[i][j] << endl;
-    //     }
-    // }
-    // outfile.close();
+
+
 }
 
 
@@ -322,7 +314,7 @@ void sudoku::fill(string difficulty) {
     shuffleSubMatCols();
 
     // Important to include getSolution() before removeElement() to retain solved matrix
-    
+
     getSolution(matrix);
     removeElement(difficulty);
     getBoard();

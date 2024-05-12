@@ -7,6 +7,22 @@ This is a program that will create an html webpage that allows you to easily pla
 
 Available buttons on the html webpage include: "Generate Sudoku" that creates the random sudoku board our c++ algothrithm that calls many helper functions to randomly shuffle a pre-solved board. There is the "Solve Board" button that calls another function to solve the sudoku puzzle, then display the results to the user. The user can check their answers with the "Check Answers" button, and the code checks if the numbers inputted are a valid solution to the given sudoku board. The user is able to submit their answers to the game by clicking on the box they would like to change. There is a notes section at the end where the user can type whatever they want.
 
+### Imported Libraries
+
+The imported libraries for the c++ code, from ```sudoku.cpp```, are shown below. The ```#include <random>``` is important for our code to be able to generate the random numbers that are used for the transformations of the board. Queues were used to create the solve method, so ```#include <queue>``` was necessary. the other 2 included libraries are for reading and writing to files. 
+
+```
+#include <iostream>
+#include <random>
+#include <fstream>
+#include <queue>
+```
+The imported libraries for the python code, from ```server.py```, are shown below. Flask was the tool that was used to allow the c++ code to work with html to create the website. ```import subprocess``` allows the python code to run the required functions from the c++ files.
+```
+from flask import Flask, render_template, send_file
+import subprocess
+```
+
 ## Structure
  The files are shown below. The ```sudoku.cpp``` and ```sudoku.h``` files are where the main part of the c++ coding takes place, and ```sudokuMain.cpp``` can be used to test the code. ```server.py``` is what allows the c++ code to communicate to the html webpage once the user runs the program. ```sudokuUI.html``` is where the majority of the html code is done, and it creates the UI for the user on the website. It is important to keep the templates folder on the same directory level as the single files named above to ensure everything is within the scope.
 ```

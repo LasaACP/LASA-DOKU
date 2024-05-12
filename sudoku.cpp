@@ -287,15 +287,7 @@ void sudoku::removeElement(string Difficulty) {
     int amtToRemove;
 
     //Determines the exact amount of elements to remove
-    if (Difficulty == "easy") {
-        amtToRemove = randomGenerator(21);
-    }
-    else if (Difficulty == "medium") {
-        amtToRemove = randomGenerator(42);
-    }
-    else {
-        amtToRemove = randomGenerator(61);
-    }
+    amtToRemove = randomGenerator(31) + 30;
 
     // Picks the elements of the board to be removed and replaces them with 0's
     for (int i = 0; i < amtToRemove; i++) {
@@ -312,12 +304,9 @@ void sudoku::fill(string difficulty) {
     shuffleRows();
     shuffleSubMatRows();
     shuffleSubMatCols();
-
-    // Important to include getSolution() before removeElement() to retain solved matrix
-
     removeElement(difficulty);
-    getSolution(matrix);
     getBoard();
+    getSolution(matrix);
 }
 
 

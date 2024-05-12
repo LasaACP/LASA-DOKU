@@ -59,7 +59,7 @@
         <br />
         <p style="font-family: Calibri"> White tiles indicate a tile that you can fill in</p>
         <div class="center-div" id="output" ></div>
-        <div class="center-div2" id="output2"></div>
+        <div class="center-div2" id="output2" style="font-family:Calibri;"></div>
         <br />
         <p style="font-family: Calibri">Notes:</p>
         <textarea name="notes" id="notes" style="height: 100px; width: 400px; font-family: Calibri; border: 2px solid black;"></textarea>
@@ -172,6 +172,8 @@
 
                         }
                     }
+
+
                     const cells = globalTable.querySelectorAll('td');
                     cells.forEach(cell => {
                         cell.addEventListener('click', () => {
@@ -192,6 +194,7 @@
                                 if (cell.textContent == '') {
                                     input.focus();
 
+                                    //check to make sure cell has valid input
                                     input.addEventListener('blur', () => {
                                         if (input.value == "1"
                                             || input.value == "2"
@@ -201,8 +204,9 @@
                                             || input.value == "6"
                                             || input.value == "7"
                                             || input.value == "8"
-                                            || input.value == "9") {
-                                            //outputDiv.innerHTML = 'asdf';
+                                            || input.value == "9"
+                                            || input.value == "") {
+                                            //checks to make sure cell is valid location for writing to
                                             if (cell.style.backgroundColor == "aliceblue") {
                                                 cell.innerText = input.value;
                                             } else {

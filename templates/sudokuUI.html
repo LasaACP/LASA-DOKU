@@ -8,23 +8,30 @@
         
         table {
             border-collapse: collapse;
+            border: 4px solid black;
+        }
+
+        button{
+            margin: 2px;
         }
 
         td {
             width: 30px;
             height: 30px;
-            border: 2px solid black;
+            border: 1px solid rgba(0, 0, 0, 1);
             text-align: center;
+            font-family: 'Berlin Sans FB';
+            cursor: pointer;
         }
 
         .center {
             text-align: center;
+            background-color: #e4e6fe;
         }
 
         .center-div {
             width: 300px; 
             margin: 0 auto; 
-            background-color: lightgray; 
             padding: 10px; 
         }
 
@@ -34,34 +41,37 @@
             padding: 10px;
         }
 
+        .white-text {
+            color: white; /* Blue font color */
+        }
+
     </style>
 </head>
 <!--body of webpage, contained within a div class that aligns it with the center-->
-<div class="center" style="background-color: lightgray">
-    <p style="font-size: 75px; background-color: mediumpurple"> LA-SAdoku </p>
+<div class="center">
+    <p class="white-text" style="font-size: 75px; background-color: #100547; font-family: 'Calibri';  "> - LASA-DOKU - </p>
     <br />
 
     <body>
-        <button id="generateSudokuButton">Generate Sudoku</button>
-        <button id="solveSudokuBoard">Solve Board</button>
-        <button id="checkSudokuBoard">Check Answers</button>
+        <button id="generateSudokuButton" style="font-family: Calibri; border: 2px solid rgba(0, 0, 0, 1); ">Generate Sudoku</button>
+        <button id="solveSudokuBoard"style="font-family: Calibri; border: 2px solid rgba(0, 0, 0, 1);">Solve Board</button>
+        <button id="checkSudokuBoard"style="font-family: Calibri; border: 2px solid rgba(0, 0, 0, 1); ">Check Answers</button>
         <br />
-        <input type="text" id="userInputField">     
-        <button id="submitButton">Submit (format: xynum (1-9))</button>
-        <br />
-        <p> note that y is from top to bottom (i.e. to print to the top corner of the table y would equal 1)</p>
-        <p> white tiles indicate a tile that you can fill in</p>
+        <p style="font-family: Calibri"> White tiles indicate a tile that you can fill in</p>
         <div class="center-div" id="output" ></div>
         <div class="center-div2" id="output2"></div>
         <br />
-        <p>notes:</p>
-        <textarea name="notes" id="notes" style="height:100px; width:400px;"></textarea>
+        <p style="font-family: Calibri">Notes:</p>
+        <textarea name="notes" id="notes" style="height: 100px; width: 400px; font-family: Calibri; border: 2px solid black;"></textarea>
         <br />
 </div>
 
     <script>
 
         var globalTable;
+
+
+
 
         // Function to create and populate the table
         function createTable() {
@@ -96,6 +106,7 @@
                                 row.appendChild(cell);
                             } else {
                                 var cell = document.createElement("td");
+                                cell.style.backgroundColor = "#ffd0e4";
                                 row.appendChild(cell);
                             }
 
@@ -140,15 +151,72 @@
                         for (let j = 0; j < 9; j++) {
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
+                            if (i == 2) {
+                                cell.style.borderBottomWidth = '2px';
+                            }
+                            if (i == 5) {
+                                cell.style.borderBottomWidth = '2px';
+                            }
+                            if (j == 3) {
+                                cell.style.borderLeftWidth = '2px'
+                            }
+                            if (j == 6) {
+                                cell.style.borderLeftWidth = '2px'
+                            }
                             if (data[i * 9 + j] == "0") {
                                 cell.style.backgroundColor = "aliceblue";
                                 cell.textContent = ""
                             } else {
-                                cell.style.backgroundColor = "lightgray";
+                                cell.style.backgroundColor = "#ffd0e4";
                             }
 
                         }
                     }
+                    const cells = globalTable.querySelectorAll('td');
+                    cells.forEach(cell => {
+                        cell.addEventListener('click', () => {
+                            // If cell is empty or not an input, make it editable
+                            if (!cell.querySelector('input')) {
+                                var cellColor = window.getComputedStyle(cell).getPropertyValue('color');
+                                //outputDiv.innerHTML = cell.style.backgroundColor;
+                                var input = document.createElement('input');
+                                var temp = cell.textContent;
+                                input.style.width = '12px';
+                                input.value = cell.innerText.trim();
+
+                                cell.innerHTML = '';
+                                cell.appendChild(input);
+                                input.focus();
+
+                                
+                                if (cell.textContent == '') {
+                                    input.focus();
+
+                                    input.addEventListener('blur', () => {
+                                        if (input.value == "1"
+                                            || input.value == "2"
+                                            || input.value == "3"
+                                            || input.value == "4"
+                                            || input.value == "5"
+                                            || input.value == "6"
+                                            || input.value == "7"
+                                            || input.value == "8"
+                                            || input.value == "9") {
+                                            //outputDiv.innerHTML = 'asdf';
+                                            if (cell.style.backgroundColor == "aliceblue") {
+                                                cell.innerText = input.value;
+                                            } else {
+                                                cell.innerText = temp;
+                                            }
+                                        } else {
+                                            cell.innerText = temp;
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+                    });
                     outputDiv.appendChild(globalTable);
                 })
                 .catch(error => console.error('Error fetching CSV file:', error));
@@ -213,6 +281,7 @@
                     }
                     outputDiv.appendChild(globalTable);
                 })
+
                 .catch(error => console.error('Error fetching CSV file:', error));
         }
         //verifies that the board is correct
@@ -281,50 +350,10 @@
 
         });
 
-        function inputTable(x, y, valid, num) {
-            var row = globalTable.rows[y];
-            var cell = row.cells[x];
-            cell.textContent = num;
-        }
-
-        function validLoc(x, y, num) {
-            fetch('/outfile.csv') // fetch csv file from server
-                .then(response => response.text())
-                .then(content => {
-                    const lines = content.split('\n');
-                    const data = [];
-                    var outputDiv = document.getElementById("output2");
-
-                    for (let i = 0; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (line === '') {
-                            continue;
-                        }
-                        const parts = line.split(',');
-                        data.push(parts);
-                    }
-
-                    if (data[y * 9 + x] == "0") {
-                        inputTable(x, y, true, num);
-                    } else {
-                        return false;
-                    } 
-                })
-            .catch(error => console.error('Error fetching or parsing CSV file:', error));
-        }
-
-        //event listener for user input button / field
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('submitButton').addEventListener('click', function () {
-                var outputDiv = document.getElementById("output2");
-                var userEdits = document.getElementById("userInputField").value;
-                var x = userEdits.charCodeAt(0) - 49;
-                var y = userEdits.charCodeAt(1) - 49;
-                var num = userEdits.charCodeAt(2) - 48;
-                var valid = validLoc(x, y, num);
-            })
 
         });
+
 </script>
 </body>
 </html>

@@ -11,7 +11,7 @@ def index():
 def generate_sudoku():
     # Call C++ .exe file to generate the Sudoku puzzle and update the CSV file
     subprocess.run(['./sudokuAlgorithm.exe'], check=True)
-    return "fesoigujew0roigjwe"
+    return ""
 
 @app.route('/outfile.csv')
 def get_csv():

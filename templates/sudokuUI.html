@@ -13,7 +13,7 @@
         td {
             width: 30px;
             height: 30px;
-            border: 1px solid black;
+            border: 2px solid black;
             text-align: center;
         }
 
@@ -33,6 +33,7 @@
             margin: 0 auto;
             padding: 10px;
         }
+
     </style>
 </head>
 <!--body of webpage, contained within a div class that aligns it with the center-->
@@ -45,10 +46,11 @@
         <button id="solveSudokuBoard">Solve Board</button>
         <button id="checkSudokuBoard">Check Answers</button>
         <br />
-        <input type="text" id="userInputField">
-        <button id="submitButton">Submit (x, y, num (1-9))</button>
+        <input type="text" id="userInputField">     
+        <button id="submitButton">Submit (format: xynum (1-9))</button>
         <br />
         <p> note that y is from top to bottom (i.e. to print to the top corner of the table y would equal 1)</p>
+        <p> white tiles indicate a tile that you can fill in</p>
         <div class="center-div" id="output" ></div>
         <div class="center-div2" id="output2"></div>
         <br />
@@ -63,21 +65,47 @@
 
         // Function to create and populate the table
         function createTable() {
-            // Create the table element
-            var outputDiv = document.getElementById('output');
-            globalTable = document.createElement("table");
-            globalTable.border = 1; // Changed from table.border to globalTable.border
+            fetch('/outfile.csv')
+                .then(response => response.text())
+                .then(content => {
+                    const lines = content.split('\n');
+                    const data = [];
 
-            // Create and append table rows and cells
-            for (var i = 0; i < 9; i++) {
-                var row = document.createElement('tr');
-                for (var j = 0; j < 9; j++) {
-                    var cell = document.createElement('td');
-                    row.appendChild(cell);
-                }
-                globalTable.appendChild(row);
-            }
-            outputDiv.appendChild(globalTable);
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim(); // Remove leading/trailing whitespaces
+                        if (line === '') {
+                            break; // Stop reading if an empty line is encountered
+                        }
+                        const parts = line.split(',');
+                        data.push(parts);
+                    }
+
+
+                    // Create the table element
+                    var outputDiv = document.getElementById('output');
+                    globalTable = document.createElement("table");
+                    globalTable.border = 1; // Changed from table.border to globalTable.border
+
+                    // Create and append table rows and cells
+                    for (var i = 0; i < 9; i++) {
+                        var row = document.createElement("tr");
+                        for (var j = 0; j < 9; j++) {
+                            if (data[i * 9 + j] == "0") {
+                                var cell = document.createElement("td");
+                                cell.style.backgroundColor = "aliceblue";
+                                row.appendChild(cell);
+                            } else {
+                                var cell = document.createElement("td");
+                                row.appendChild(cell);
+                            }
+
+                        }
+                        globalTable.appendChild(row);
+                    }
+                    outputDiv.appendChild(globalTable);
+                })
+                .catch(error => console.error('Error fetching CSV file:', error));
+
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -113,7 +141,10 @@
                             var cell = row.cells[j];
                             cell.textContent = data[i * 9 + j];
                             if (data[i * 9 + j] == "0") {
+                                cell.style.backgroundColor = "aliceblue";
                                 cell.textContent = ""
+                            } else {
+                                cell.style.backgroundColor = "lightgray";
                             }
 
                         }
@@ -250,16 +281,47 @@
 
         });
 
+        function inputTable(x, y, valid, num) {
+            var row = globalTable.rows[y];
+            var cell = row.cells[x];
+            cell.textContent = num;
+        }
+
+        function validLoc(x, y, num) {
+            fetch('/outfile.csv') // fetch csv file from server
+                .then(response => response.text())
+                .then(content => {
+                    const lines = content.split('\n');
+                    const data = [];
+                    var outputDiv = document.getElementById("output2");
+
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (line === '') {
+                            continue;
+                        }
+                        const parts = line.split(',');
+                        data.push(parts);
+                    }
+
+                    if (data[y * 9 + x] == "0") {
+                        inputTable(x, y, true, num);
+                    } else {
+                        return false;
+                    } 
+                })
+            .catch(error => console.error('Error fetching or parsing CSV file:', error));
+        }
+
         //event listener for user input button / field
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('submitButton').addEventListener('click', function () {
+                var outputDiv = document.getElementById("output2");
                 var userEdits = document.getElementById("userInputField").value;
                 var x = userEdits.charCodeAt(0) - 49;
                 var y = userEdits.charCodeAt(1) - 49;
                 var num = userEdits.charCodeAt(2) - 48;
-                var row = globalTable.rows[y];
-                var cell = row.cells[x];
-                cell.textContent = num;
+                var valid = validLoc(x, y, num);
             })
 
         });

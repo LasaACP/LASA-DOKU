@@ -20,13 +20,16 @@ public:
 	int** matrix;
 	int** solutionMatrix;
 	void shuffleSubMatCols();
-	int** getSolution(int** matrix);
+	void getSolution(int** matrix);
+	bool solve(int** matrix);
 	bool getBoard();
 	void shuffleSubMatRows();
 	void shuffleRows();
 	void shuffleCols();
 	void fill(string difficulty);
 	void printSudoku();
+	bool isValid(int** matrix, int num, int rows, int cols);
+	pair<int, int> findempty(int** matrix);
 
 	sudoku(int rows, int columns, string difficulty);
 
